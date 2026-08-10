@@ -9,7 +9,7 @@
       }
       .line-symbol {
         fill: #4b5263;
-        font-weight: 600;
+        font-weight: 300;
       }
       .text-blue { fill: #61afef; }
       .text-green { fill: #98c379; }

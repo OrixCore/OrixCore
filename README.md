@@ -1,16 +1,20 @@
-## Hi there 👋
+# Hi there, I'm OrixCore 👋
 
-<!--
-**OrixCore/OrixCore** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+A software developer passionate about building tools, applications, and open-source projects.
 
-Here are some ideas to get you started:
+---
 
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+### 🛠️ Tech & Tools
+* **Languages:** Python, JavaScript / TypeScript, Bash
+* **Hosting & Platforms:** Linux, GitHub Actions, Docker
+* **Focus:** Open Source Tools & Web Systems
+
+---
+
+### ⚡ Quick Stats
+![OrixCore's GitHub Stats](https://github-readme-stats.vercel.app/api?username=OrixCore&show_icons=true&theme=dark)
+
+---
+
+### 📫 Connect with Me
+* **GitHub:** [OrixCore](https://github.com/OrixCore)

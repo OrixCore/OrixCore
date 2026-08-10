@@ -59,14 +59,7 @@
 
   <!-- خط متصل نظيف من نهاية المستطيل الثاني -->
   <line x1="97" y1="11" x2="550" y2="11" stroke="#4b5263" stroke-width="1.2" />
-
-  <!-- 3. المستطيل الأيمن (✔) -->
-  <path d="M 550,2 L 595,2 L 603,11 L 595,20 L 550,20 Z" fill="#282c34"/>
-  <path d="M 550,2 L 558,11 L 550,20" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
-
-  <!-- علامة صح الخضراء ✔ -->
-  <text x="565" y="12" class="term-base text-green">✔</text>
-
+                                                                                
   <!-- ==================== السطر الثاني (Bottom Line - ملاصق تماماً ونحيف) ==================== -->
   <text x="0" y="21" class="term-base line-symbol">╰─</text>
 

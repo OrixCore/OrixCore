@@ -1,3 +1,3 @@
-<div align="left">
-  <img src="header.svg" width="500" alt="Terminal Header" />
+<div align="center">
+  <img src="./header.svg" width="100%" alt="Banner" />
 </div>

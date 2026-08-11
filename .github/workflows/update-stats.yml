@@ -36,14 +36,10 @@ jobs:
         run: |
           python main.py
 
-      - name: Pull latest changes
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git pull --rebase origin main
-
       - name: Commit and Push Changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "Chore: Update GitHub stats SVG"
           file_pattern: "cache/* *.svg"
+          disable_globbing: false
+          push_options: '--force-with-lease'

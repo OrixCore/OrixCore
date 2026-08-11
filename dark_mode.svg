@@ -17,11 +17,11 @@ text, tspan {white-space: pre;}
 </style>
 <rect width="985px" height="530px" fill="#161b22" rx="15"/>
 <text x="20" y="35" fill="#c9d1d9">
-<tspan x="20" y="35">orix@developer</tspan> ————————————————————————————————————————————————————————————————————————————————
-<tspan x="20" y="60" class="cc">. </tspan><tspan class="key">OS</tspan>:<tspan class="cc"> .................................................................... </tspan><tspan class="value">Android 13, Linux</tspan>
+<tspan x="20" y="35">orix@developer</tspan> —————————————————————————————————————————————————————————————————————————————————
+<tspan x="20" y="60" class="cc">. </tspan><tspan class="key">OS</tspan>:<tspan class="cc"> ........................................................................ </tspan><tspan class="value">Android 13, Linux</tspan>
 <tspan x="20" y="85" class="cc">. </tspan><tspan class="key">Uptime</tspan>:<tspan class="cc" id="age_data_dots"> ........................................................... </tspan><tspan class="value" id="age_data">22 years, 5 months, 29 days</tspan>
-<tspan x="20" y="110" class="cc">. </tspan><tspan class="key">Host</tspan>:<tspan class="cc"> .................................................................. </tspan><tspan class="value">TTM Technologies, Inc.</tspan>
-<tspan x="20" y="135" class="cc">. </tspan><tspan class="key">Kernel</tspan>:<tspan class="cc"> ............................................................. </tspan><tspan class="value">CAM Operator</tspan>
+<tspan x="20" y="110" class="cc">. </tspan><tspan class="key">Host</tspan>:<tspan class="cc"> ................................................................... </tspan><tspan class="value">TTM Technologies, Inc.</tspan>
+<tspan x="20" y="135" class="cc">. </tspan><tspan class="key">Kernel</tspan>:<tspan class="cc"> .................................................................. </tspan><tspan class="value">CAM Operator</tspan>
 <tspan x="20" y="160" class="cc">. </tspan><tspan class="key">IDE</tspan>:<tspan class="cc"> ........................................................... </tspan><tspan class="value">IDEA 2023.3.2, VSCode 1.96.0</tspan>
 
 <tspan x="20" y="195" class="cc">. </tspan><tspan class="key">Languages</tspan>.<tspan class="key">Programming</tspan>:<tspan class="cc"> ......................................... </tspan><tspan class="value">Java, Python, JavaScript, C++</tspan>
@@ -31,7 +31,7 @@ text, tspan {white-space: pre;}
 <tspan x="20" y="280" class="cc">. </tspan><tspan class="key">Hobbies</tspan>.<tspan class="key">Software</tspan>:<tspan class="cc"> ................................. </tspan><tspan class="value">Minecraft Modding, iOS Jailbreaking</tspan>
 <tspan x="20" y="305" class="cc">. </tspan><tspan class="key">Hobbies</tspan>.<tspan class="key">Hardware</tspan>:<tspan class="cc"> .................................... </tspan><tspan class="value">Overclocking, Undervolting</tspan>
 
-<tspan x="20" y="345">- Contact ——————————————————————————————————————————————————————————————————————————————————</tspan>
+<tspan x="20" y="345">- Contact ————————————————————————————————————————————————————————————————————————————————————</tspan>
 <tspan x="20" y="370" class="cc">. </tspan><tspan class="key">Email</tspan>.<tspan class="key">Personal</tspan>:<tspan class="cc"> ................................................ </tspan><tspan class="value">your.email@gmail.com</tspan>
 <tspan x="20" y="395" class="cc">. </tspan><tspan class="key">LinkedIn</tspan>:<tspan class="cc"> .............................................................. </tspan><tspan class="value">your-linkedin</tspan>
 <tspan x="20" y="420" class="cc">. </tspan><tspan class="key">Discord</tspan>:<tspan class="cc"> ............................................................... </tspan><tspan class="value">your-discord</tspan>

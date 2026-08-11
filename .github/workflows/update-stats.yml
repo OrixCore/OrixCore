@@ -2,19 +2,21 @@ name: Update GitHub Stats SVG
 
 on:
   schedule:
+    # يعمل تلقائياً كل يوم الساعة 00:00 UTC
     - cron: '0 0 * * *'
+  # يتيح لك تشغيله يدوياً من تبويب Actions
   workflow_dispatch:
 
 jobs:
   update-stats:
     runs-on: ubuntu-latest
     permissions:
-      contents: write # هذه الصلاحية تسمح للبوت بكتابة ورفع التغييرات
+      contents: write # منح البوت صلاحية الكتابة للمستودع
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.ACCESS_TOKEN }} # استخدام التوكن الخاص بك للتأكد من المزامنة
+          token: ${{ secrets.ACCESS_TOKEN }}
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -31,15 +33,10 @@ jobs:
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
           USER_NAME: ${{ github.repository_owner }}
         run: |
-          python main.py # تأكد من اسم ملف بايثون لديك
+          python main.py # تأكد أن هذا هو اسم ملف بايثون الخاص بك
 
       - name: Commit and Push Changes
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add cache/ *.svg
-          if ! git diff-index --quiet HEAD; then
-            git commit -m "Chore: Update GitHub stats SVG"
-            git pull --rebase origin main
-            git push
-          fi
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Chore: Update GitHub stats SVG"
+          file_pattern: "cache/* *.svg"

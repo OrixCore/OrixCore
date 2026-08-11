@@ -1,73 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 650 24" width="100%" height="24">
-  <defs>
-    <style>
-      @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&amp;display=swap');
-      
-      .term-base {
-        font-family: 'Fira Code', monospace;
-        font-size: 12px;
-      }
-      .line-symbol {
-        fill: #4b5263;
-        font-weight: 300;
-      }
-      .text-blue { fill: #61afef; }
-      .text-green { fill: #98c379; }
-
-      .typing-text {
-        fill: #e06c75;
-        font-weight: 600;
-        white-space: pre;
-        animation: type 8s steps(30) infinite;
-      }
-      .cursor-block {
-        fill: #ffffff;
-      }
-
-      @keyframes type {
-        0%, 100% { content: ""; }
-        5%, 30% { content: "pkg update &amp;&amp; pkg upgrade"; }
-        35%, 60% { content: "python3 main.py"; }
-        65%, 90% { content: "echo \"Welcome to OrixCore Workspace\""; }
-      }
-    </style>
-  </defs>
-
-  <!-- ==================== السطر الأول (Top Line - أنحف ومرصوص) ==================== -->
-  <text x="0" y="10" class="term-base line-symbol">╭─</text>
-
-  <!-- 2. الخلفية الثانية (ترسم أولاً لتبقى تحت الأولى) -->
-  <path d="M 48,2 L 89,2 L 97,11 L 89,20 L 48,20 Z" fill="#282c34"/>
-  <path d="M 89,2 L 97,11 L 89,20" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
-
-  <!-- أيقونة المنزل الزرقاء -->
-  <g transform="translate(52, 3) scale(0.38)" fill="#61afef">
-    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
-  </g>
-
-  <!-- رمز ~ -->
-  <text x="75" y="12" class="term-base text-blue" font-weight="600">~</text>
-
-  <!-- 1. الخلفية الأولى (ترسم فوق الثانية لتتداخل وتخفي أطرافها) -->
-  <path d="M 22,2 L 56,2 L 64,11 L 56,20 L 22,20 Z" fill="#282c34"/>
-  <path d="M 56,2 L 64,11 L 56,20" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 260" width="100%" height="100%">
+  <!-- خلفية سوداء عميقة وضخمة -->
+  <rect width="100%" height="100%" fill="#000000" rx="12" />
   
-  <!-- أيقونة أندرويد دقيقة -->
-  <g transform="translate(25, 3) scale(0.35)" fill="#abb2bf">
-    <path d="M17.6 9.48l1.84-3.18c.16-.27.06-.62-.21-.78-.27-.16-.62-.06-.78.21l-1.87 3.24c-1.32-.58-2.78-.9-4.32-.9s-3 .32-4.32.9L5.08 5.33c-.16-.27-.51-.37-.78-.21-.27.16-.37.51-.21.78l1.84 3.18C3.84 10.95 2.5 13.3 2.5 16h19c0-2.7-1.34-5.05-3.9-6.52zM7 13.5c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm10 0c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z"/>
-  </g>
-
-  <!-- خط متصل نظيف من نهاية المستطيل الثاني -->
-  <line x1="97" y1="11" x2="550" y2="11" stroke="#4b5263" stroke-width="1.2" />
-                                                                                
-  <!-- ==================== السطر الثاني (Bottom Line - ملاصق تماماً ونحيف) ==================== -->
-  <text x="0" y="21" class="term-base line-symbol">╰─</text>
-
-  <!-- مربع المؤشر الأبيض الثابت █ -->
-  <rect x="22" y="13" width="5" height="10" class="cursor-block" />
-
-  <!-- النص المتغير -->
-  <text x="31" y="21" class="term-base typing-text">
-    <tspan id="cmd"></tspan>
+  <!-- نص أبيض عريض وكبير جداً -->
+  <text x="50%" y="50%" dominant-baseline="central" text-anchor="middle" fill="#FFFFFF" font-family="'Fira Code', 'Segoe UI', monospace" font-size="42" font-weight="800" letter-spacing="1">
+    No Hugs &amp; Kisses; Only Bugs &amp; Fixes.
   </text>
 </svg>

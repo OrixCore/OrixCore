@@ -38,5 +38,8 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add cache/ *.svg
-          git diff-index --quiet HEAD || git commit -m "Chore: Update GitHub stats SVG"
-          git push
+          if ! git diff-index --quiet HEAD; then
+            git commit -m "Chore: Update GitHub stats SVG"
+            git pull --rebase origin main
+            git push
+          fi

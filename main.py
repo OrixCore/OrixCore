@@ -253,7 +253,7 @@ def stars_counter(data):
 
 def svg_overwrite(filename, age_data, commit_data, star_data, repo_data, contrib_data, follower_data, loc_data):
     """
-    تحديث عناصر الـ SVG مع محاذاة النقاط بحسب التصميم الجديد
+    تحديث عناصر الـ SVG مع ضبط محاذاة النقاط بشكل دقيق
     """
     tree = etree.parse(filename)
     root = tree.getroot()
@@ -268,7 +268,7 @@ def svg_overwrite(filename, age_data, commit_data, star_data, repo_data, contrib
     justify_format(root, 'commit_data', commit_data, 22)
     justify_format(root, 'follower_data', follower_data, 10)
     
-    # تحديث الأسطر (Lines of Code)
+    # تحديث الأسطر (Lines of Code) - استلام القيم الرقمية لضمان محاذاة النقاط
     justify_format(root, 'loc_data', loc_data[2], 9)
     justify_format(root, 'loc_add', loc_data[0])
     justify_format(root, 'loc_del', loc_data[1], 7)
@@ -348,8 +348,8 @@ def perf_counter(funct, *args):
 
 
 if __name__ == '__main__':
-    # تاريخ الميلاد للحساب (يمكنك تعديله بتاريخ ميلادك الحقيقي)
-    BIRTHDAY = datetime.datetime(2002, 7, 5)
+    # تم تعديل تاريخ الميلاد إلى 6 يناير 2006
+    BIRTHDAY = datetime.datetime(2006, 1, 6)
 
     user_data, user_time = perf_counter(user_getter, USER_NAME)
     OWNER_ID, acc_date = user_data
@@ -362,12 +362,10 @@ if __name__ == '__main__':
     contrib_data, contrib_time = perf_counter(graph_repos_stars, 'repos', ['OWNER', 'COLLABORATOR', 'ORGANIZATION_MEMBER'])
     follower_data, follower_time = perf_counter(follower_getter, USER_NAME)
 
-    formatted_loc = [f"{x:,}" for x in total_loc[:-1]]
-
-    # تحديث الملفات (اختر اسم ملف SVG الخاص بك)
+    # تم تمرير total_loc مباشرة كقيم رقمية بدلاً من تحويلها لنصوص مسبقاً لحساب المحاذاة بدقة
     if os.path.exists('dark_mode.svg'):
-        svg_overwrite('dark_mode.svg', age_data, commit_data, star_data, repo_data, contrib_data, follower_data, formatted_loc)
+        svg_overwrite('dark_mode.svg', age_data, commit_data, star_data, repo_data, contrib_data, follower_data, total_loc)
     if os.path.exists('card.svg'):
-        svg_overwrite('card.svg', age_data, commit_data, star_data, repo_data, contrib_data, follower_data, formatted_loc)
+        svg_overwrite('card.svg', age_data, commit_data, star_data, repo_data, contrib_data, follower_data, total_loc)
 
     print("SVG updated successfully!")

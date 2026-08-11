@@ -2,17 +2,19 @@ name: Update GitHub Stats SVG
 
 on:
   schedule:
-    # يعمل تلقائياً كل يوم الساعة 00:00 UTC
     - cron: '0 0 * * *'
-  # يتيح لك تشغيله يدوياً في أي وقت
   workflow_dispatch:
 
 jobs:
   update-stats:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # هذه الصلاحية تسمح للبوت بكتابة ورفع التغييرات
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.ACCESS_TOKEN }} # استخدام التوكن الخاص بك للتأكد من المزامنة
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -29,7 +31,7 @@ jobs:
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
           USER_NAME: ${{ github.repository_owner }}
         run: |
-          python main.py  # استبدل main.py باسم ملف البايثون الخاص بك إن كان مختلفاً
+          python main.py # تأكد من اسم ملف بايثون لديك
 
       - name: Commit and Push Changes
         run: |

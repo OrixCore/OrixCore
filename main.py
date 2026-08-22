@@ -359,23 +359,19 @@ def svg_overwrite(filename, age_data, commit_data, star_data, repo_data, contrib
     find_and_replace(root, 'follower_data_dots', follower_dots)
     find_and_replace(root, 'follower_data', follower_val)
 
-    # ---- سطر Lines of Code (loc_data ...... (add++, dots del--)) ----
-    LOC_MID_COL = 40  # عمود نهاية "Lines of Code on GitHub: <loc_data>"
+    # ---- سطر Lines of Code: ". Lines of Code on GitHub: [نقاط] loc_data ( add++, del-- )" ----
+    # النقاط موجودة فقط قبل loc_data. بعدها " ( add++, del-- )" بدون أي نقاط إضافية.
     loc_total, loc_add, loc_del = loc_data[2], loc_data[0], loc_data[1]
-
-    loc_dots, loc_val = build_single_section('Lines of Code on GitHub', loc_total, LOC_MID_COL)
-    find_and_replace(root, 'loc_data_dots', loc_dots)
-    find_and_replace(root, 'loc_data', loc_val)
 
     add_s = fmt_value(loc_add)
     del_s = fmt_value(loc_del)
-    tail_prefix = ' ( '
-    tail_add = add_s + '++, '
-    tail_del_suffix = del_s + '-- )'
-    fixed_tail_len = len(tail_prefix) + len(tail_add) + len(tail_del_suffix)
-    del_dots_len = max(0, (LINE_WIDTH - LOC_MID_COL) - fixed_tail_len)
+    tail = ' ( ' + add_s + '++, ' + del_s + '-- )'
+
+    loc_dots, loc_val = build_single_section('Lines of Code on GitHub', loc_total, LINE_WIDTH - len(tail))
+    find_and_replace(root, 'loc_data_dots', loc_dots)
+    find_and_replace(root, 'loc_data', loc_val)
     find_and_replace(root, 'loc_add', add_s)
-    find_and_replace(root, 'loc_del_dots', make_dots(del_dots_len))
+    find_and_replace(root, 'loc_del_dots', '')
     find_and_replace(root, 'loc_del', del_s)
 
     tree.write(filename, encoding='utf-8', xml_declaration=True)

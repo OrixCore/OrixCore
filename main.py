@@ -13,6 +13,9 @@ HEADERS = {'authorization': 'token ' + os.environ.get('ACCESS_TOKEN', '')}
 USER_NAME = os.environ.get('USER_NAME', 'OrixCore')
 QUERY_COUNT = {'user_getter': 0, 'follower_getter': 0, 'graph_repos_stars': 0, 'recursive_loc': 0, 'graph_commits': 0, 'loc_query': 0}
 
+# طول كل سطر بالكارد بالحرف (ثابت لكل الأسطر، محسوب من الأسطر الثابتة: OS/Host/Kernel/IDE)
+LINE_WIDTH = 96
+
 
 def daily_readme(birthday):
     """
@@ -20,8 +23,8 @@ def daily_readme(birthday):
     """
     diff = relativedelta.relativedelta(datetime.datetime.today(), birthday)
     return '{} {}, {} {}, {} {}{}'.format(
-        diff.years, 'year' + format_plural(diff.years), 
-        diff.months, 'month' + format_plural(diff.months), 
+        diff.years, 'year' + format_plural(diff.years),
+        diff.months, 'month' + format_plural(diff.months),
         diff.days, 'day' + format_plural(diff.days),
         ' 🎂' if (diff.months == 0 and diff.days == 0) else '')
 
@@ -251,45 +254,131 @@ def stars_counter(data):
     return total_stars
 
 
+# =========================================================================
+#  منطق المحاذاة الجديد
+# =========================================================================
+#
+# الفكرة: كل الأسطر بالكارد (الثابتة منها والديناميكية) طولها الكلي بالحرف
+# لازم يساوي LINE_WIDTH (=96) بالضبط، لأن الخط أحادي التباعد (monospace).
+# بدل ما نخمن عدد نقاط ثابت، منحسبه رياضياً بحيث الناتج يطلع بنفس الطول
+# دايماً، بغض النظر عن طول الرقم/النص.
+#
+# للأسطر يلي فيها قسمين بنفس السطر (Repos|Stars, Commits|Followers) في
+# منطق إضافي: نحدد عمود ثابت (MID_COL) لازم يبلش عنده القسم الثاني، وبعدين
+# نحسب نقاط كل قسم على حدة بحيث ينتهي بالظبط عند ذاك العمود.
+
+def make_dots(n):
+    """
+    يرجع نص نقاط (' .... ') طوله بالحرف يساوي n بالضبط.
+    """
+    n = max(0, n)
+    if n == 0:
+        return ''
+    if n == 1:
+        return ' '
+    if n == 2:
+        return '. '
+    if n == 3:
+        return ' . '
+    return ' ' + ('.' * (n - 2)) + ' '
+
+
+def fmt_value(value):
+    """يحول الأرقام لنص بفواصل الآلاف، ويترك النصوص كما هي."""
+    if isinstance(value, int):
+        return '{:,}'.format(value)
+    return str(value)
+
+
+def build_single_section(key, value, target_col, prefix='. '):
+    """
+    يبني نص سطر كامل (مفتاح + نقاط + قيمة) بحيث طوله الكلي = target_col بالضبط.
+    يرجع (dots_text, formatted_value) عشان نحطهم بعناصر SVG منفصلة.
+    """
+    val_s = fmt_value(value)
+    fixed_len = len(prefix) + len(key) + 1 + len(val_s)  # prefix + key + ':' + value
+    dots_len = max(0, target_col - fixed_len)
+    return make_dots(dots_len), val_s
+
+
+def build_dual_section(key1, val1, middle_text, key2, val2, mid_col, total_col=LINE_WIDTH, prefix='. '):
+    """
+    يبني سطر فيه قسمين (متل Repos...Stars أو Commits...Followers).
+    - القسم الأول: prefix + key1 + ':' + dots1 + val1 + middle_text  -> ينتهي عند mid_col
+    - القسم الثاني: key2 + ':' + dots2 + val2                        -> ينتهي عند total_col
+    يرجع (dots1, val1_s, dots2, val2_s)
+    """
+    val1_s = fmt_value(val1)
+    val2_s = fmt_value(val2)
+
+    fixed1_len = len(prefix) + len(key1) + 1 + len(val1_s) + len(middle_text)
+    dots1_len = max(0, mid_col - fixed1_len)
+
+    fixed2_len = len(key2) + 1 + len(val2_s)
+    dots2_len = max(0, (total_col - mid_col) - fixed2_len)
+
+    return make_dots(dots1_len), val1_s, make_dots(dots2_len), val2_s
+
+
 def svg_overwrite(filename, age_data, commit_data, star_data, repo_data, contrib_data, follower_data, loc_data):
     """
-    تحديث عناصر الـ SVG مع ضبط محاذاة النقاط بشكل دقيق
+    تحديث عناصر الـ SVG مع محاذاة دقيقة (طول كل سطر = LINE_WIDTH حرف دايماً)
     """
     tree = etree.parse(filename)
     root = tree.getroot()
-    
-    # تحديث العمر
-    justify_format(root, 'age_data', age_data, 58)
-    
-    # تحديث إحصائيات GitHub
-    justify_format(root, 'repo_data', repo_data, 6)
-    justify_format(root, 'contrib_data', contrib_data)
-    justify_format(root, 'star_data', star_data, 14)
-    justify_format(root, 'commit_data', commit_data, 22)
-    justify_format(root, 'follower_data', follower_data, 10)
-    
-    # تحديث الأسطر (Lines of Code) - استلام القيم الرقمية لضمان محاذاة النقاط
-    justify_format(root, 'loc_data', loc_data[2], 9)
-    justify_format(root, 'loc_add', loc_data[0])
-    justify_format(root, 'loc_del', loc_data[1], 7)
-    
+
+    MID_COL = 55  # العمود المشترك يلي يبلش فيه القسم الثاني بكل الأسطر المزدوجة
+
+    # ---- سطر العمر (مفرد) ----
+    age_dots, age_val = build_single_section('Uptime', age_data, LINE_WIDTH)
+    find_and_replace(root, 'age_data_dots', age_dots)
+    find_and_replace(root, 'age_data', age_val)
+
+    # ---- سطر Repos / Contributed / Stars (مزدوج) ----
+    repo_dots, repo_val, star_dots, star_val = build_dual_section(
+        key1='Repos', val1=repo_data,
+        middle_text=' {{Contributed: {}}} | '.format(fmt_value(contrib_data)),
+        key2='Stars', val2=star_data,
+        mid_col=MID_COL,
+    )
+    find_and_replace(root, 'repo_data_dots', repo_dots)
+    find_and_replace(root, 'repo_data', repo_val)
+    find_and_replace(root, 'contrib_data', fmt_value(contrib_data))
+    find_and_replace(root, 'star_data_dots', star_dots)
+    find_and_replace(root, 'star_data', star_val)
+
+    # ---- سطر Commits / Followers (مزدوج) ----
+    commit_dots, commit_val, follower_dots, follower_val = build_dual_section(
+        key1='Commits', val1=commit_data,
+        middle_text=' | ',
+        key2='Followers', val2=follower_data,
+        mid_col=MID_COL,
+    )
+    find_and_replace(root, 'commit_data_dots', commit_dots)
+    find_and_replace(root, 'commit_data', commit_val)
+    find_and_replace(root, 'follower_data_dots', follower_dots)
+    find_and_replace(root, 'follower_data', follower_val)
+
+    # ---- سطر Lines of Code (loc_data ...... (add++, dots del--)) ----
+    LOC_MID_COL = 40  # عمود نهاية "Lines of Code on GitHub: <loc_data>"
+    loc_total, loc_add, loc_del = loc_data[2], loc_data[0], loc_data[1]
+
+    loc_dots, loc_val = build_single_section('Lines of Code on GitHub', loc_total, LOC_MID_COL)
+    find_and_replace(root, 'loc_data_dots', loc_dots)
+    find_and_replace(root, 'loc_data', loc_val)
+
+    add_s = fmt_value(loc_add)
+    del_s = fmt_value(loc_del)
+    tail_prefix = ' ( '
+    tail_add = add_s + '++, '
+    tail_del_suffix = del_s + '-- )'
+    fixed_tail_len = len(tail_prefix) + len(tail_add) + len(tail_del_suffix)
+    del_dots_len = max(0, (LINE_WIDTH - LOC_MID_COL) - fixed_tail_len)
+    find_and_replace(root, 'loc_add', add_s)
+    find_and_replace(root, 'loc_del_dots', make_dots(del_dots_len))
+    find_and_replace(root, 'loc_del', del_s)
+
     tree.write(filename, encoding='utf-8', xml_declaration=True)
-
-
-def justify_format(root, element_id, new_text, length=0):
-    if isinstance(new_text, int):
-        new_text = f"{'{:,}'.format(new_text)}"
-    new_text = str(new_text)
-    find_and_replace(root, element_id, new_text)
-    
-    if length > 0:
-        just_len = max(0, length - len(new_text))
-        if just_len <= 2:
-            dot_map = {0: '', 1: ' ', 2: '. '}
-            dot_string = dot_map[just_len]
-        else:
-            dot_string = ' ' + ('.' * just_len) + ' '
-        find_and_replace(root, f"{element_id}_dots", dot_string)
 
 
 def find_and_replace(root, element_id, new_text):
@@ -362,7 +451,6 @@ if __name__ == '__main__':
     contrib_data, contrib_time = perf_counter(graph_repos_stars, 'repos', ['OWNER', 'COLLABORATOR', 'ORGANIZATION_MEMBER'])
     follower_data, follower_time = perf_counter(follower_getter, USER_NAME)
 
-    # تم تمرير total_loc مباشرة كقيم رقمية بدلاً من تحويلها لنصوص مسبقاً لحساب المحاذاة بدقة
     if os.path.exists('dark_mode.svg'):
         svg_overwrite('dark_mode.svg', age_data, commit_data, star_data, repo_data, contrib_data, follower_data, total_loc)
     if os.path.exists('card.svg'):
